@@ -49,7 +49,7 @@ public class CollectRowResultTest {
         String tableName = "bi_test01";
         //List<TableFieldDesc> fields = listTableFields_demo_product_data();
         List<TableFieldDesc> fields = testTableSql();
-        flinkSqlService.createTableInMysql(tableName, fields);
+        flinkSqlService.createSourceTableFromMysql(tableName, fields);
 
 
         TableResult tableResult =  tableEnv.sqlQuery("select * from "+ tableName).execute();

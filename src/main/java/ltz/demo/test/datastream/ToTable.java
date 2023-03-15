@@ -1,4 +1,4 @@
-package ltz.demo.datastream;
+package ltz.demo.test.datastream;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

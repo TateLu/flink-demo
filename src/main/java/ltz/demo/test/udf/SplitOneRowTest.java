@@ -28,7 +28,7 @@ public class SplitOneRowTest {
         String selectedFields = "province STRING,citychengshi STRING,guomingdp DOUBLE,riqi TIMESTAMP(0),value11 INT";
         List<TableFieldDesc> fields = FlinkSqlUtil.parseToTableField(selectedFields);
         //create table
-        flinkSqlService.createTableInMysql(tableName, fields);
+        flinkSqlService.createSourceTableFromMysql(tableName, fields);
 
         //3 测试自定义函数 SplitColumns
         tableEnv.createTemporarySystemFunction("SplitOneRow", SplitOneRow.class);
