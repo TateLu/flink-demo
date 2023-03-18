@@ -24,7 +24,7 @@ import java.util.List;
  * @author: TATE.LU
  * @create: 2023-03-14 15:20
  **/
-public class SplitOneRowToManyV3 {
+public class SplitOneRowToManyWithDataStream {
     public static void main(String[] agrs) throws Exception {
         // create environments of both APIs
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
