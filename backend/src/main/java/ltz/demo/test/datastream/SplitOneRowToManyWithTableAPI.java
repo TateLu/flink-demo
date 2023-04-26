@@ -6,12 +6,10 @@ import ltz.demo.util.FlinkSqlService;
 import ltz.demo.util.FlinkSqlUtil;
 import org.apache.flink.api.common.typeinfo.LocalTimeTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.functions.TableFunction;
-import org.apache.flink.types.Row;
 
 import java.util.List;
 
@@ -41,22 +39,11 @@ public class SplitOneRowToManyWithTableAPI {
         inputTable.getResolvedSchema().getColumns().forEach(column -> {
             System.out.println("datatype "+column.getDataType().toString());
         });
-        //CloseableIterator<Row> rows = inputTable.execute().collect();
-        //System.out.println("rowssssss");
-        //while(rows.hasNext()){
-        //   Row row =  rows.next();
-        //   for(int i = 0;i < row.getArity();i++){
-        //       System.out.println("field dataType " + row.getField(i).getClass());
-        //   }
-        //    System.out.println(row);
-        //}
-        System.out.println("0000000000000 input table ");
-        //inputTable.execute().print();
+
+
 
         //TODO 日期类型比较特别
         System.out.println("start row transform");
-        DataStream<Row> dataStream = tableEnv.toDataStream(inputTable, Row.class);
-        String[] fieldNames = {"province", "value11","guomingdp","riqi","province1"};
         TypeInformation[] fieldTypes = {
                 TypeInformation.of(String.class),
                 TypeInformation.of(Integer.class),
@@ -64,11 +51,10 @@ public class SplitOneRowToManyWithTableAPI {
                 LocalTimeTypeInfo.LOCAL_DATE_TIME,
                 TypeInformation.of(String.class)
         };
-
+        //第一次注册
         System.out.println("separator 1111");
         TableFunction func = new MyFlatMapFunction(";;;",fieldTypes);
         tableEnv.registerFunction("func", func);
-        //inputTable = tableEnv.sqlQuery("select *,myfunc(province) from "+inputTable);
         inputTable = inputTable
                 .select($("*"))
                 .flatMap(call("func", $("province"), $("value11"),$("guomingdp"),$("riqi")))
@@ -76,6 +62,7 @@ public class SplitOneRowToManyWithTableAPI {
         tableEnv.createTemporaryView("table01",inputTable);
         inputTable.execute().print();
 
+        //第二次注册
         System.out.println("separator 222");
         TypeInformation[] fieldTypes02 = {
                 TypeInformation.of(String.class),
@@ -95,49 +82,6 @@ public class SplitOneRowToManyWithTableAPI {
 
         table01.execute().print();
 
-
-        //final String splitRowFiedName = "province";
-        //DataStream<Row> newDataStream = dataStream.flatMap(new FlatMapFunction<Row, Row>() {
-        //    @Override
-        //    public void flatMap(Row row, Collector<Row> collector) throws Exception {
-        //        //拆分为行
-        //        if(row.getField(splitRowFiedName) != null);{
-        //            String[] values = row.getField(splitRowFiedName).toString().split(";");
-        //            int newRowLen = 5;
-        //            for(int i = 0;i < values.length;i++){
-        //                Row newRow = new Row(newRowLen);
-        //                int start = 0;
-        //                while(start < row.getArity()){
-        //                    newRow.setField(start,row.getField(start));
-        //                    start = start + 1;
-        //                }
-        //                newRow.setField(start,values[i]);
-        //                collector.collect(newRow);
-        //            }
-        //
-        //
-        //        }
-        //    }
-        //}, Types.ROW_NAMED(fieldNames,fieldTypes));
-        //
-        //
-        //
-        //System.out.println("111111 print datastream");
-        ////newDataStream.print();
-        //env.execute();
-        //inputTable = tableEnv.fromDataStream(newDataStream, Schema.newBuilder()
-        //        .column("province", "string")
-        //        .column("value11", "int")
-        //        .column("guomingdp", "double")
-        //        .column("riqi", "timestamp(0)")
-        //        .column("province1", "string")
-        //        //.watermark("event_time", "SOURCE_WATERMARK()")
-        //        .build());
-        ////inputTable = tableEnv.fromDataStream(newDataStream);
-        //List<Column> columnList= inputTable.getResolvedSchema().getColumns();
-        //
-        //System.out.println("22222 print table");
-        //tableEnv.executeSql("select * from "+inputTable).print();
 
 
 

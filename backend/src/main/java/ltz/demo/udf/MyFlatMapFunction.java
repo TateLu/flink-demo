@@ -22,9 +22,12 @@ public class MyFlatMapFunction extends TableFunction<Row> {
     public void eval(Object... objects) {
         Object[] objects1 = new Object[objects.length + 1];
         ArrayUtil.copy(objects,objects1,objects.length);
+        /**1 传进来的分隔符，作为新的1列*/
         objects1[objects.length] = separator;
 
         collect(Row.of(objects1));
+
+        /**2 或者 实现自定义拆分的逻辑*/
         //String str = objects[0].toString();
         //int len = str.length();
         //Object[] objects1 = new Object[1];
