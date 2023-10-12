@@ -21,6 +21,7 @@ class DDLTest {
         String password = "root123";
         String tableName = "my_test";
         Map<String, String> fieldTypes = new HashMap<>();
+        //TODO 增加各种数据库类型 到 flink sql的类型映射
         fieldTypes.put("id", "INT");
         fieldTypes.put("name", "VARCHAR(255)");
         fieldTypes.put("age", "INT");
@@ -44,6 +45,7 @@ class DDLTest {
         String tableName = "gdp_test";
         String driverClassName = JdbcEnum.clickhouse.getDriverClassName();
         Map<String, String> fieldTypes = new HashMap<>();
+        //TODO 增加各种数据库类型 到 flink sql的类型映射
         fieldTypes.put("rk", "BIGINT");
         fieldTypes.put("province", "VARCHAR(255)");
         //fieldTypes.put("age", "INT");
