@@ -1,4 +1,4 @@
-package demo.flink.test.datastream;
+package demo.flink.examples.datastream;
 
 import demo.flink.entity.TableFieldDesc;
 import demo.flink.util.FlinkSqlService;

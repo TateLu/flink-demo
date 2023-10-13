@@ -1,4 +1,4 @@
-package demo.flink.test.datastream;
+package demo.flink.examples.datastream;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

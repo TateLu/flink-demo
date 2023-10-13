@@ -1,4 +1,4 @@
-package demo.flink.test.datastream;
+package demo.flink.examples.datastream;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;

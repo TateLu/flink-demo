@@ -1,6 +1,7 @@
-package demo.flink.udf.udtf;
+package demo.flink.udf.table;
 
 import cn.hutool.core.util.ArrayUtil;
+import demo.flink.udf.udtf.SplitOneColumnToMultiColumn;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
@@ -14,9 +15,14 @@ import java.util.stream.IntStream;
 
 import static org.apache.flink.table.api.Expressions.$;
 import static org.apache.flink.table.api.Expressions.call;
-import static org.junit.jupiter.api.Assertions.*;
 
-class SplitOneColumnToMultiColumnTest {
+/**
+ * @program: flink-demo
+ * @description:
+ * @author: TATE.LU
+ * @create: 2023-10-13 18:28
+ **/
+public class SplitOneColumnToMultiColumnTest {
     @Test
     void test(){
         // create environments of both APIs
@@ -42,5 +48,4 @@ class SplitOneColumnToMultiColumnTest {
 
         tableEnv.executeSql("select * from "+inputTable).print();
     }
-
 }

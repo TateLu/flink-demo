@@ -1,4 +1,4 @@
-package demo.flink.test;
+package demo.flink.examples;
 
 import cn.hutool.core.util.StrUtil;
 import demo.flink.entity.TableFieldDesc;

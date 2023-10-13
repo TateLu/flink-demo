@@ -1,4 +1,4 @@
-package demo.flink.test;
+package demo.flink.examples;
 
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.Table;
