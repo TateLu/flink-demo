@@ -1,4 +1,4 @@
-package demo.flink.udf.udtf;
+package demo.flink.udf.table;
 
 import cn.hutool.core.lang.Assert;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -12,20 +12,23 @@ import org.apache.flink.types.Row;
  * @author: TATE.LU
  * @create: 2023-03-13 18:39
  **/
-public class SplitOneColumnToMultiColumn extends TableFunction<Row> {
-    private int columnSize;
+public class SplitToMultiColumn extends TableFunction<Row> {
+    private int size;
 
 
-    public SplitOneColumnToMultiColumn(int columnSize){
-        Assert.isTrue(columnSize > 0,() -> new RuntimeException("列数目必须大于0"));
-        this.columnSize = columnSize;
+    /**
+     * @param size 要拆成几列
+     * */
+    public SplitToMultiColumn(int size){
+        Assert.isTrue(size > 0,() -> new RuntimeException("列数目必须大于0"));
+        this.size = size;
     }
 
     public void eval(String value, String separator) {
         String[] valueSplits = value.split(separator);
         //
-        Row row = new Row(columnSize);
-        for (int i = 0; i < columnSize; i++) {
+        Row row = new Row(size);
+        for (int i = 0; i < size; i++) {
             if (i < valueSplits.length) {
                 row.setField(i, valueSplits[i]);
                 continue;
@@ -43,8 +46,8 @@ public class SplitOneColumnToMultiColumn extends TableFunction<Row> {
     }
     @Override
     public TypeInformation<Row> getResultType() {
-        TypeInformation<?>[] types = new TypeInformation[columnSize];
-        for (int i = 0; i < columnSize; i++) {
+        TypeInformation<?>[] types = new TypeInformation[size];
+        for (int i = 0; i < size; i++) {
             types[i] = Types.STRING;
         }
         return Types.ROW(types);

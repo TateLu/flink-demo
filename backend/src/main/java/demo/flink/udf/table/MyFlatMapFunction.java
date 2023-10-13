@@ -1,4 +1,4 @@
-package demo.flink.udf.udtf;
+package demo.flink.udf.table;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;

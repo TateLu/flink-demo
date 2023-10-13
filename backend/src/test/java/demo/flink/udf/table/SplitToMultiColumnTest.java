@@ -1,7 +1,6 @@
 package demo.flink.udf.table;
 
 import cn.hutool.core.util.ArrayUtil;
-import demo.flink.udf.udtf.SplitOneColumnToMultiColumn;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
@@ -22,7 +21,7 @@ import static org.apache.flink.table.api.Expressions.call;
  * @author: TATE.LU
  * @create: 2023-10-13 18:28
  **/
-public class SplitOneColumnToMultiColumnTest {
+public class SplitToMultiColumnTest {
     @Test
     void test(){
         // create environments of both APIs
@@ -32,7 +31,7 @@ public class SplitOneColumnToMultiColumnTest {
 
         //3 测试自定义函数 SplitColumns
         final int columnSize = 5;
-        tableEnv.registerFunction("SplitOneColumnToMultiColumn", new SplitOneColumnToMultiColumn(columnSize));
+        tableEnv.registerFunction("SplitToMultiColumn", new SplitToMultiColumn(columnSize));
         //tableEnv.registerFunction("MyFlatMapFunction", new MyFlatMapFunction());
 
         // create a DataStream
@@ -44,7 +43,7 @@ public class SplitOneColumnToMultiColumnTest {
 
         String[] names = IntStream.range(0,5).mapToObj(index -> "name"+index).collect(Collectors.toList()).toArray(new String[0]);
         inputTable = inputTable
-                .flatMap(call("SplitOneColumnToMultiColumn", $("name"),";")).as(names[0], ArrayUtil.sub(names,1,names.length));
+                .flatMap(call("SplitToMultiColumn", $("name"),";")).as(names[0], ArrayUtil.sub(names,1,names.length));
 
         tableEnv.executeSql("select * from "+inputTable).print();
     }
