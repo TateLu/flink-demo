@@ -14,7 +14,7 @@ import java.time.LocalDate;
  * @author: TATE.LU
  * @create: 2023-03-14 15:15
  **/
-public class ToTable2 {
+public class DataStreamToTable {
     public static void main(String[] agrs) throws Exception {
         // setup the environment
         final EnvironmentSettings settings =
