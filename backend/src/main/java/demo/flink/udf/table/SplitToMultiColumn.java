@@ -46,6 +46,9 @@ public class SplitToMultiColumn extends TableFunction<Row> {
     }
     @Override
     public TypeInformation<Row> getResultType() {
+        /**
+         * 可以通过构造函数传递参数，来判断数据类型
+         * */
         TypeInformation<?>[] types = new TypeInformation[size];
         for (int i = 0; i < size; i++) {
             types[i] = Types.STRING;

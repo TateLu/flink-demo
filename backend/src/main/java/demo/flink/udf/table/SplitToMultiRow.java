@@ -52,7 +52,9 @@ public class SplitToMultiRow extends TableFunction<Row> {
     }
     @Override
     public TypeInformation<Row> getResultType() {
-        //对应输出字段的类型
+        /**
+         * 可以通过构造函数传递参数，来判断数据类型
+         * */
         return Types.ROW(Types.STRING,Types.STRING,Types.INT);
     }
 
