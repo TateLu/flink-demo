@@ -32,8 +32,10 @@ public class SplitToMultiRowTest {
         // create a DataStream
         DataStream<Row> dataStream = env.fromElements(Row.of("Alice;aaa;123", 12), Row.of("Bob;bbb;123", 10), Row.of("Cary;ccc;123", 100),Row.of("Cary;ccc;123", 120));
 
+
         // interpret the insert-only DataStream as a Table
         Table inputTable = tableEnv.fromDataStream(dataStream).as("name", "score");
+
 
 
         inputTable = inputTable
