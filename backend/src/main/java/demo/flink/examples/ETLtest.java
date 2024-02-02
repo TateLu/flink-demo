@@ -53,12 +53,12 @@ public class ETLtest {
         StatementSet stmtSet = tableEnv.createStatementSet();
         //sink table1
         String province_data_shanxi = "province_data_shanxi";
-        flinkSqlService.createSourceTableFromMysql(province_data_shanxi, tableFieldDescs);
+        flinkSqlService.buildSourceTableFromMysql(province_data_shanxi, tableFieldDescs);
         String sql1 = flinkSqlService.copyTableWithFilterInSql(view_selectTable, tableFieldDescs.stream().map(TableFieldDesc::getName).collect(Collectors.toList()).toArray(new String[0]),
                 "industry = '计算机'", province_data_shanxi);
         //sink table2
         String province_data_guangdong = "province_data_guangdong";
-        flinkSqlService.createSourceTableFromMysql(province_data_guangdong, tableFieldDescs);
+        flinkSqlService.buildSourceTableFromMysql(province_data_guangdong, tableFieldDescs);
         String sql2 = flinkSqlService.copyTableWithFilterInSql(view_selectTable, tableFieldDescs.stream().map(TableFieldDesc::getName).collect(Collectors.toList()).toArray(new String[0]),
                 "industry = '互联网'", province_data_guangdong);
         //insert 需要批量执行
@@ -75,7 +75,7 @@ public class ETLtest {
         //create table
         String tableName = "bi_test01";
         List<TableFieldDesc> fields = testTableSql();
-        flinkSqlService.createSourceTableFromMysql(tableName, fields);
+        flinkSqlService.buildSourceTableFromMysql(tableName, fields);
 
 
         //3 测试自定义函数 ConcatStringInGroup
@@ -94,7 +94,7 @@ public class ETLtest {
         //create table
         String tableName = "province_product";
         List<TableFieldDesc> fields = listTableFields_province_product();
-        flinkSqlService.createSourceTableFromMysql(tableName, fields);
+        flinkSqlService.buildSourceTableFromMysql(tableName, fields);
         Table table01 = tableEnv.sqlQuery(StrUtil.format("select * from {}", tableName));
 
         // avg(零售价),groupby(省份)

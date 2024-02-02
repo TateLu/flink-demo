@@ -32,7 +32,7 @@ public class SplitOneRowToManyWithTableAPI {
         final String selectedFields = "province STRING,citychengshi STRING,guomingdp DOUBLE,riqi TIMESTAMP(0),value11 int";
         List<TableFieldDesc> fields = FlinkSqlUtil.parseToTableField(selectedFields);
         String tableName = "bi_test01";
-        flinkSqlService.createSourceTableFromMysql(tableName, fields);
+        flinkSqlService.buildSourceTableFromMysql(tableName, fields);
 
 
         Table inputTable = tableEnv.sqlQuery("select UPPER(province) as province,value11,guomingdp,riqi from " + tableName);

@@ -35,7 +35,8 @@ public class SplitOneRowToManyWithDataStream {
         final String selectedFields = "province STRING,citychengshi STRING,guomingdp DOUBLE,riqi TIMESTAMP(0),value11 int";
         List<TableFieldDesc> fields = FlinkSqlUtil.parseToTableField(selectedFields);
         String tableName = "bi_test01";
-        flinkSqlService.createSourceTableFromMysql(tableName, fields);
+        //source
+        flinkSqlService.buildSourceTableFromMysql(tableName, fields);
 
 
         Table inputTable = tableEnv.sqlQuery("select UPPER(province) as province,value11,guomingdp,riqi from " + tableName);
@@ -51,8 +52,7 @@ public class SplitOneRowToManyWithDataStream {
         //   }
         //    System.out.println(row);
         //}
-        System.out.println("0000000000000 input table ");
-        //inputTable.execute().print();
+        inputTable.execute().print();
 
         //TODO 日期类型比较特别
         System.out.println("start row transform");

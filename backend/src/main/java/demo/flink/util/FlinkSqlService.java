@@ -111,7 +111,7 @@ public class FlinkSqlService {
 
 
 
-    public TableResult createSourceTableFromMysql(String tableName, List<TableFieldDesc> fields) {
+    public TableResult buildSourceTableFromMysql(String tableName, List<TableFieldDesc> fields) {
         String ddl = getMysqlDDL(tableName,fields);
         return tableEnvironment.executeSql(ddl);
     }
