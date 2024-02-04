@@ -86,26 +86,22 @@ public class FlinkSqlService {
         return tableEnvironment.sqlQuery(StrUtil.format("select {} from {}",sql,table));
     }
 
+    /**
+     * @param fields 要读取的表的字段
+     * */
     public String getMysqlDDL(String tableName, List<TableFieldDesc> fields) {
         String fieldSql = fields.stream().map(field -> StrUtil.format("{} {}", field.getName(), field.getType())).collect(Collectors.joining(","));
-        String primaryKey = StrUtil.format("PRIMARY KEY ({})  NOT ENFORCED", fields.stream().map(TableFieldDesc::getName).collect(Collectors.joining(",")));
-        fieldSql = fieldSql +","+ primaryKey;
-        String ddl = "CREATE TABLE {} ( {} ) WITH (  " +
-                "'connector' = 'jdbc',\n" +
-                " 'url' = 'jdbc:mysql://172.16.6.229:3306/bi_insight',\n" +
-                " 'username' = 'root',\n" +
-                " 'password' = 'xiaoi_219_mysql8_pwd',\n" +
-                " 'table-name' = '{}'" +
+        String ddl = "CREATE TABLE myTable (\n" +
+                "  id STRING,\n" +
+                "  name STRING\n" +
+                ") WITH (\n" +
+                "  'connector' = 'jdbc',\n" +
+                "  'url' = 'jdbc:mysql://localhost:3306/test',\n" +
+                "  'username' = 'root',\n" +
+                "  'password' = 'root123',\n" +
+                "  'table-name' = 'demo'\n" +
                 ")";
-        // String ddl = "CREATE TABLE {} ( {} ) WITH (  " +
-        //        "'connector' = 'jdbc',\n" +
-        //        " 'url' = 'jdbc:mysql://81.68.120.99:3306/dataease',\n" +
-        //        " 'username' = 'root',\n" +
-        //        " 'password' = 'root123',\n" +
-        //        " 'table-name' = '{}'" +
-        //        ")";
         String sql = StrUtil.format(ddl, tableName, fieldSql, tableName);
-        //System.out.println(sql);
         return sql;
     }
 

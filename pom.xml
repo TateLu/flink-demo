@@ -29,6 +29,7 @@ under the License.
 	<modules>
 		<module>backend</module>
 		<module>com.demo.flink.jdbc.ext</module>
+		<module>cdc</module>
 	</modules>
 
 	<properties>
