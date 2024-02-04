@@ -29,11 +29,21 @@ public class Window {
                 ")";
         tableEnv.executeSql(ddl);
         tableEnv.executeSql("desc myTable").print();
+
+        //window
         tableEnv.executeSql("SELECT * FROM TABLE(\n" +
                 "   TUMBLE(\n" +
                 "     DATA => TABLE myTable,\n" +
                 "     TIMECOL => DESCRIPTOR(start_time),\n" +
                 "     SIZE => INTERVAL '20' SECONDS))").print();
+
+        //window aggregation
+        tableEnv.executeSql("SELECT window_start, window_end,count(*) FROM TABLE(\n" +
+                "   TUMBLE(\n" +
+                "     DATA => TABLE myTable,\n" +
+                "     TIMECOL => DESCRIPTOR(start_time),\n" +
+                "     SIZE => INTERVAL '20' SECONDS)) " +
+                "group by  window_start, window_end").print();
 
 
     }
