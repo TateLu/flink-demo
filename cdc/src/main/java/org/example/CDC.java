@@ -18,7 +18,8 @@ public class CDC {
         String ddl = "CREATE TABLE myTable (\n" +
                 "  id STRING,\n" +
                 "  name STRING,\n" +
-                "  start_time TIMESTAMP(0)" +
+                "  start_time TIMESTAMP(0)," +
+                "   PRIMARY KEY (id) NOT ENFORCED" +
                 "     ) WITH (\n" +
                 "     'connector' = 'mysql-cdc',\n" +
                 "     'hostname' = 'localhost',\n" +
@@ -29,6 +30,20 @@ public class CDC {
                 "     'table-name' = 'demo');";
         tableEnv.executeSql(ddl);
 
+        ddl = "CREATE TABLE myTable_sink (\n" +
+                "  id STRING,\n" +
+                "  name STRING,\n" +
+                "  start_time TIMESTAMP(0)," +
+                "   PRIMARY KEY (id) NOT ENFORCED" +
+                "     ) WITH (\n" +
+                "     'connector' = 'mysql-cdc',\n" +
+                "     'hostname' = 'localhost',\n" +
+                "     'port' = '3306',\n" +
+                "     'username' = 'root',\n" +
+                "     'password' = 'root123',\n" +
+                "     'database-name' = 'test',\n" +
+                "     'table-name' = 'demo');";
+        tableEnv.executeSql(ddl);
 
         tableEnv.executeSql("select * from myTable").print();
 
