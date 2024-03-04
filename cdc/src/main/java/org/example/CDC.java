@@ -1,7 +1,9 @@
 package org.example;
 
+import com.ververica.cdc.connectors.mysql.source.MySqlSource;
+import com.ververica.cdc.debezium.JsonDebeziumDeserializationSchema;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 /**
  * @program: flink-demo
@@ -11,41 +13,30 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
  **/
 public class CDC {
     //create main function
-    public static void main(String[] args) {
-        // create environments of both APIs
+    public static void main(String[] args) throws Exception {
+        MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
+                .hostname("localhost")
+                .port(3306)
+                .databaseList("test") // set captured database
+                .tableList("test.demo") // set captured table
+                .username("root")
+                .password("root123")
+                .deserializer(new JsonDebeziumDeserializationSchema()) // converts SourceRecord to JSON String
+                .build();
+
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
-        String ddl = "CREATE TABLE myTable (\n" +
-                "  id STRING,\n" +
-                "  name STRING,\n" +
-                "  start_time TIMESTAMP(0)," +
-                "   PRIMARY KEY (id) NOT ENFORCED" +
-                "     ) WITH (\n" +
-                "     'connector' = 'mysql-cdc',\n" +
-                "     'hostname' = 'localhost',\n" +
-                "     'port' = '3306',\n" +
-                "     'username' = 'root',\n" +
-                "     'password' = 'root123',\n" +
-                "     'database-name' = 'test',\n" +
-                "     'table-name' = 'demo');";
-        tableEnv.executeSql(ddl);
 
-        ddl = "CREATE TABLE myTable_sink (\n" +
-                "  id STRING,\n" +
-                "  name STRING,\n" +
-                "  start_time TIMESTAMP(0)," +
-                "   PRIMARY KEY (id) NOT ENFORCED" +
-                "     ) WITH (\n" +
-                "     'connector' = 'mysql-cdc',\n" +
-                "     'hostname' = 'localhost',\n" +
-                "     'port' = '3306',\n" +
-                "     'username' = 'root',\n" +
-                "     'password' = 'root123',\n" +
-                "     'database-name' = 'test',\n" +
-                "     'table-name' = 'demo');";
-        tableEnv.executeSql(ddl);
+        // enable checkpoint
+        env.enableCheckpointing(3000);
 
-        tableEnv.executeSql("select * from myTable").print();
+        env
+                .fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL Source")
+                // set 4 parallel source tasks
+                .setParallelism(4)
+                .print().setParallelism(1); // use parallelism 1 for sink to keep message ordering
+
+        env.execute("Print MySQL Snapshot + Binlog");
+
 
     }
 }

@@ -1,4 +1,4 @@
-package demo.flink.examples.mysql;
+package demo.flink.examples.window;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
