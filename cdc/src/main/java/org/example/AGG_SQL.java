@@ -8,11 +8,11 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 /**
  * @program: flink-demo
- * @description:
+ * @description: 聚合查询
  * @author: TATE.LU
  * @create: 2024-02-04 16:44
  **/
-public class CDC_SQL {
+public class AGG_SQL {
     //create main function
     public static void main(String[] args) throws Exception {
         MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
