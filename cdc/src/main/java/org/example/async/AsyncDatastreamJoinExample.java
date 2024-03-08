@@ -12,12 +12,15 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.flink.api.common.eventtime.Watermark;
 import org.apache.flink.api.common.eventtime.WatermarkGenerator;
 import org.apache.flink.api.common.eventtime.WatermarkOutput;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.datastream.AsyncDataStream;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.async.ResultFuture;
 import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +29,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class AsyncMysqlDatasourceExample {
+public class AsyncDatastreamJoinExample {
 
     public static void main(String[] args) throws Exception {
         // 设置执行环境
@@ -44,9 +47,23 @@ public class AsyncMysqlDatasourceExample {
                 TimeUnit.MILLISECONDS,
                 10 // 最大并发请求
         );
+        mysqlData = mysqlData.assignTimestampsAndWatermarks(WatermarkStrategy.forMonotonousTimestamps());
         // 打印结果
         mysqlData.print();
 
+        // 创建另一个数据流，模拟需要join的数据
+        DataStream<String> anotherStream = env.fromElements("1-A", "2-B", "3-C");
+        anotherStream = anotherStream.assignTimestampsAndWatermarks(WatermarkStrategy.forMonotonousTimestamps());
+
+
+        // 执行join操作
+        DataStream<String> joinedStream = mysqlData.join(anotherStream)
+                .where(s -> s.split("-")[0]) // 使用第一个数据流的字段作为key
+                .equalTo(s -> s.split("-")[0]) // 使用第二个数据流的字段作为key
+                .window(TumblingEventTimeWindows.of(Time.seconds(10)))
+                .apply ( (s1, s2) -> s1 + " - " + s2 );
+        // 打印结果
+        joinedStream.print();
 
 
         // 执行任务并记录开始时间
