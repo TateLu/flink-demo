@@ -3,7 +3,6 @@ package org.example.datastream;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.typeinfo.Types;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
@@ -27,10 +26,10 @@ import java.sql.*;
 public class JdbcSourceSink {
     public static void main(String[] args) throws Exception {
         //1 内置source，推荐写法
-        source();
+        //source();
 
         //2 自定义source
-        //customSource();
+        customSource();
     }
 
 
@@ -90,13 +89,13 @@ public class JdbcSourceSink {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         // 创建并添加自定义的MySQL源
-        DataStream<Tuple2<Integer, String>> sourceStream = env.addSource(new MysqlCustomSource());
+        DataStream<Row> sourceStream = env.addSource(new MysqlCustomSource());
 
         // 添加简单的map操作以验证数据读取（例如：打印）
-        DataStream<String> resultStream = sourceStream.map(new MapFunction<Tuple2<Integer, String>, String>() {
+        DataStream<String> resultStream = sourceStream.map(new MapFunction<Row, String>() {
             @Override
-            public String map(Tuple2<Integer, String> value) throws Exception {
-                return "ID: " + value.f0 + ", Name: " + value.f1;
+            public String map(Row row) throws Exception {
+                return "ID: " + row.getField(0).toString() + ", Name: " + row.getField(1).toString();
             }
         });
 
@@ -110,7 +109,7 @@ public class JdbcSourceSink {
 
 
     // 在实际项目中，你还需要添加错误处理和检查点机制以保证容错性和 Exactly-Once 语义
-    public static class MysqlCustomSource extends RichParallelSourceFunction<Tuple2<Integer, String>> {
+    public static class MysqlCustomSource extends RichParallelSourceFunction<Row> {
 
         private static final long serialVersionUID = 1L;
 
@@ -139,14 +138,15 @@ public class JdbcSourceSink {
         }
 
         @Override
-        public void run(SourceContext<Tuple2<Integer, String>> ctx) throws Exception {
+        public void run(SourceContext<Row> ctx) throws Exception {
             while (isRunning && resultSet.next()) {
-                int id = resultSet.getInt(1);
+                String id = resultSet.getString(1);
                 String name = resultSet.getString(2);
 
                 synchronized (ctx.getCheckpointLock()) {
                     // 发送数据到Flink流处理系统
-                    ctx.collect(new Tuple2<>(id, name));
+
+                    ctx.collect(Row.of(id,name));
                 }
             }
         }
