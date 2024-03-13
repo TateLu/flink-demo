@@ -26,14 +26,14 @@ import java.sql.*;
 public class JdbcSourceSink {
     public static void main(String[] args) throws Exception {
         //1 内置source，推荐写法
-        //source();
+        //sourceAndSink();
 
         //2 自定义source
         customSource();
     }
 
 
-    private static void source() throws Exception {
+    private static void sourceAndSink() throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         JdbcInputFormat jdbcInputFormat = JdbcInputFormat.buildJdbcInputFormat()
