@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  * @author: TATE.LU
  * @create: 2023-03-13 18:14
  **/
-public class ETLtest {
+public class ETLDemo {
 
     public static void main(String[] args) throws Exception {
 

@@ -1,4 +1,4 @@
-package demo.flink.examples.datastream;
+package demo.flink.examples.udf.splitrow;
 
 import demo.flink.entity.TableFieldDesc;
 import demo.flink.util.FlinkSqlService;

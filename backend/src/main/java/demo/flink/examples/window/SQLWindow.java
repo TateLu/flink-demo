@@ -9,8 +9,10 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
  * @author: TATE.LU
  * @create: 2024-02-02 16:53
  **/
-public class Window {
-    //create main
+public class SQLWindow {
+    /**
+     * 可以参考阿里云 flink教程 学习
+     * */
     public static void main(String[] args) {
         // create environments of both APIs
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

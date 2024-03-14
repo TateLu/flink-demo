@@ -13,11 +13,19 @@ import java.util.List;
  * @author: TATE.LU
  * @create: 2023-03-10 01:39
  **/
-public class SqlValidatorTest {
+public class SqlValidator {
     EnvironmentSettings settings = EnvironmentSettings.newInstance().build();
     TableEnvironment tableEnvironment = TableEnvironment.create(settings);
 
-    public static final SqlValidatorTest instance = new SqlValidatorTest();
+    public static final SqlValidator instance = new SqlValidator();
+
+
+    /**
+     * mock 两个表，执行SQL。来校验SQL是否正确
+     *
+     * 使用 connector' = 'datagen' 性能高
+     *
+     * */
     public   synchronized List<Column> testSqlValidate() {
         List<Column> columns = null;
         try {

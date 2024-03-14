@@ -1,4 +1,4 @@
-package org.example.constant;
+package demo.flink.constant;
 
 /**
  * @program: flink-demo

@@ -1,4 +1,4 @@
-package org.example.window;
+package demo.flink.examples.window;
 
 /**
  * @program: flink-demo
@@ -21,7 +21,7 @@ import org.apache.flink.util.Collector;
 
 import java.util.Random;
 
-public class FlinkWindowExample {
+public class DataStreamWindow {
 
 
 
@@ -33,7 +33,7 @@ public class FlinkWindowExample {
         // 使用模拟数据源
         DataStream<Tuple2<String, Long>> userClicksStream = env.addSource(new UserClickSource());
 
-        // 设置Watermark策略以支持event-time窗口
+        // 设置Watermark策略以支持process-time窗口
         userClicksStream = userClicksStream
                 //.assignTimestampsAndWatermarks(WatermarkStrategy.<Tuple2<String, Long>>forBoundedOutOfOrderness(Duration.ofSeconds(2)))
                 .keyBy(0)

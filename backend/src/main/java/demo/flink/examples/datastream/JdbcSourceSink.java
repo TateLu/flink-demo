@@ -1,4 +1,4 @@
-package org.example.datastream;
+package demo.flink.examples.datastream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -13,7 +13,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
 import org.apache.flink.types.Row;
-import org.example.constant.ConnectionConst;
+import demo.flink.constant.ConnectionConst;
 
 import java.sql.*;
 

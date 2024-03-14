@@ -1,4 +1,4 @@
-package org.example.datastream;
+package demo.flink.examples.datastream;
 
 /**
  * @program: flink-demo
@@ -11,7 +11,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-public class FlinkJoinExample {
+public class JoinExample {
 
     public static void main(String[] args) throws Exception {
         // 创建Flink的执行环境

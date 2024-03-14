@@ -1,4 +1,4 @@
-package org.example.async;
+package demo.flink.examples.async;
 
 /**
  * @program: flink-demo

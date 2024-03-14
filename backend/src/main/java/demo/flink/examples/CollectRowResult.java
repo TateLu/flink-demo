@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @author: TATE.LU
  * @create: 2023-03-13 18:25
  **/
-public class CollectRowResultTest {
+public class CollectRowResult {
 
     public static void main(String[] args) throws Exception {
 
