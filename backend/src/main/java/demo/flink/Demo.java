@@ -8,8 +8,9 @@ package demo.flink;
  **/
 
 import org.apache.flink.streaming.api.datastream.DataStream;
-        import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-        import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 public class Demo {
     public static void main(String[] args) throws Exception {
@@ -21,7 +22,8 @@ public class Demo {
 
         // 3. 定义处理时间窗口，并应用窗口函数
         DataStream<Integer> windowedStream = inputStream
-                .timeWindowAll(Time.seconds(5)) // 使用处理时间窗口
+                .keyBy((k) -> k)
+                .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
                 .sum(0); // 应用sum函数来计算每个窗口中的元素数量
 
         // 4. 打印结果（可选）
