@@ -37,7 +37,7 @@ public class SQLWindow {
                 "   TUMBLE(\n" +
                 "     DATA => TABLE myTable,\n" +
                 "     TIMECOL => DESCRIPTOR(start_time),\n" +
-                "     SIZE => INTERVAL '20' SECONDS))").print();
+                "     SIZE => INTERVAL '20' SECONDS ))").print();
 
         //window aggregation
         tableEnv.executeSql("SELECT window_start, window_end,count(*) FROM TABLE(\n" +
